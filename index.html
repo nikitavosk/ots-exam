@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=2.0">
+    <title>ОТС и системный анализ — тренажёр к экзамену (1–30)</title>
+    <style>
+        :root {
+            --bg: #f4f7fb;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-secondary: #475569;
+            --border: #e2e8f0;
+            --accent: #2563eb;
+            --accent-light: #dbeafe;
+            --accent-dark: #1d4ed8;
+            --badge-bg: #eef2ff;
+            --badge-text: #3730a3;
+            --success: #10b981;
+            --error: #ef4444;
+            --warning: #f59e0b;
+            --shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+            --shadow-hover: 0 8px 18px rgba(0, 66, 128, 0.07);
+            --radius: 1.8rem;
+            --radius-sm: 1rem;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg);
+            font-family: 'Segoe UI', system-ui, -apple-system, Roboto, 'Helvetica Neue', sans-serif;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1.6;
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 950px;
+            width: 100%;
+            background: var(--card-bg);
+            border-radius: 2.5rem;
+            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.05), 0 8px 18px rgba(0, 20, 30, 0.08);
+            padding: 2rem 2rem 2.5rem;
+            margin: 1rem 0;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            margin-bottom: 0.4rem;
+            flex-wrap: wrap;
+            border-bottom: 3px solid #e9eef3;
+            padding-bottom: 1.2rem;
+        }
+        h1 span {
+            background: var(--accent-light);
+            padding: 0.2rem 1rem;
+            border-radius: 3rem;
+            font-size: 1.3rem;
+            font-weight: 500;
+            color: var(--accent);
+        }
+
+        .mode-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin: 1.5rem 0 1.2rem;
+            flex-wrap: wrap;
+        }
+        .mode-tab {
+            padding: 0.7rem 1.6rem;
+            border-radius: 2.5rem;
+            border: 2px solid var(--border);
+            background: #fff;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+        .mode-tab:hover {
+            border-color: #b9c9dd;
+            background: #f9fbfd;
+        }
+        .mode-tab.active {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+
+        .controls-row {
+            display: flex;
+            gap: 0.7rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .search-input {
+            flex: 1;
+            min-width: 200px;
+            padding: 0.7rem 1.2rem;
+            border: 1px solid #dce3eb;
+            border-radius: 2.5rem;
+            font-size: 0.95rem;
+            outline: none;
+            transition: 0.2s;
+            background: #fff;
+        }
+        .search-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        .btn {
+            padding: 0.7rem 1.5rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: 0.2s;
+            white-space: nowrap;
+            font-size: 0.9rem;
+        }
+        .btn-primary {
+            background: var(--accent);
+            color: #fff;
+        }
+        .btn-primary:hover {
+            background: var(--accent-dark);
+        }
+        .btn-outline {
+            background: #fff;
+            border: 2px solid var(--border);
+            color: var(--text);
+        }
+        .btn-outline:hover {
+            border-color: #b9c9dd;
+            background: #f9fbfd;
+        }
+        .btn-success {
+            background: var(--success);
+            color: #fff;
+        }
+        .btn-success:hover {
+            background: #059669;
+        }
+        .btn-danger {
+            background: #fff;
+            border: 2px solid #fecaca;
+            color: #b91c1c;
+        }
+        .btn-danger:hover {
+            background: #fef2f2;
+        }
+
+        .question-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .card {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow);
+        }
+        .card:hover {
+            border-color: #b9c9dd;
+            box-shadow: var(--shadow-hover);
+        }
+        .card-header {
+            padding: 1rem 1.4rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            user-select: none;
+            border-bottom: 1px solid transparent;
+            transition: background 0.15s;
+            gap: 0.8rem;
+        }
+        .card-header:hover {
+            background: #f9fbfd;
+        }
+        .card.active .card-header {
+            background: #f1f5f9;
+            border-bottom: 1px solid #dce3eb;
+        }
+        .question-title {
+            font-weight: 600;
+            font-size: 1.05rem;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+        .badge {
+            background: var(--badge-bg);
+            color: var(--badge-text);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.2rem 0.7rem;
+            border-radius: 2rem;
+        }
+        .toggle-icon {
+            font-size: 1.6rem;
+            font-weight: 300;
+            color: #64748b;
+            transition: transform 0.25s;
+            line-height: 1;
+            min-width: 28px;
+            text-align: center;
+        }
+        .card.active .toggle-icon {
+            transform: rotate(45deg);
+            color: var(--accent);
+        }
+        .card-body {
+            max-height: 0;
+            overflow: hidden;
+            padding: 0 1.4rem;
+            transition: max-height 0.4s ease-in-out, padding 0.2s;
+            background: #ffffff;
+            color: #334155;
+        }
+        .card.active .card-body {
+            max-height: 5000px;
+            padding: 1rem 1.4rem 1.6rem;
+        }
+        .content-block {
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+        }
+        .list-styled {
+            padding-left: 1.5rem;
+            margin: 0.3rem 0 0.5rem;
+        }
+        .list-styled li {
+            margin-bottom: 0.3rem;
+        }
+        .highlight {
+            background: #f1f5f9;
+            border-radius: var(--radius-sm);
+            padding: 0.7rem 1.1rem;
+            font-weight: 500;
+            color: #0f172a;
+            margin: 0.4rem 0;
+        }
+        .grid-examples {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 0.6rem;
+            margin-top: 0.3rem;
+        }
+        .example-box {
+            background: #f8fafc;
+            border: 1px solid #e9eef3;
+            border-radius: var(--radius-sm);
+            padding: 0.7rem;
+            font-size: 0.9rem;
+        }
+        .scholar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.3rem 0.8rem;
+            align-items: baseline;
+        }
+        .scholar strong {
+            min-width: 150px;
+            color: #0f172a;
+        }
+        hr {
+            border: 0;
+            border-top: 1px solid #e2e8f0;
+            margin: 0.7rem 0;
+        }
+        .hidden-card {
+            display: none;
+        }
+
+        /* Режим карточек */
+        .flashcard-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .flashcard-stats {
+            display: flex;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            font-weight: 600;
+            font-size: 0.95rem;
+            background: #f8fafc;
+            padding: 0.9rem 1.6rem;
+            border-radius: 2rem;
+            width: 100%;
+        }
+        .flashcard-stats .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .dot {
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .dot-correct {
+            background: var(--success);
+        }
+        .dot-wrong {
+            background: var(--error);
+        }
+        .dot-remaining {
+            background: #cbd5e1;
+        }
+        .progress-bar-bg {
+            flex: 1;
+            min-width: 100px;
+            height: 7px;
+            background: #e2e8f0;
+            border-radius: 1rem;
+            overflow: hidden;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--accent);
+            border-radius: 1rem;
+            transition: width 0.35s;
+        }
+        .flashcard {
+            background: #ffffff;
+            border: 2px solid var(--border);
+            border-radius: 2rem;
+            padding: 2rem 2rem 1.8rem;
+            width: 100%;
+            max-width: 750px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+        }
+        .flashcard .question-number {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.6rem;
+        }
+        .flashcard .question-text {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 1.2rem;
+            line-height: 1.5;
+        }
+        .flashcard .question-full {
+            font-size: 1rem;
+            font-weight: 500;
+            color: #334155;
+            margin-bottom: 1.4rem;
+            line-height: 1.5;
+            text-align: left;
+            background: #f9fafb;
+            padding: 1rem 1.2rem;
+            border-radius: 1rem;
+            border: 1px dashed #dce3eb;
+        }
+        .flashcard .answer-reveal {
+            display: none;
+            text-align: left;
+            background: #f0fdf4;
+            border-radius: 1.2rem;
+            padding: 1.2rem 1.5rem;
+            margin: 1rem 0 1.5rem;
+            font-size: 0.95rem;
+            color: #334155;
+            border: 1px solid #bbf7d0;
+        }
+        .flashcard .answer-reveal.show {
+            display: block;
+        }
+        .flashcard .btn-row {
+            display: flex;
+            gap: 0.8rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 0.8rem;
+        }
+        .btn-lg {
+            padding: 0.9rem 2rem;
+            font-size: 1rem;
+            border-radius: 2.5rem;
+        }
+        .btn-ghost {
+            background: #fff;
+            border: 2px solid var(--border);
+            color: var(--text-secondary);
+        }
+        .btn-ghost:hover {
+            background: #f8fafc;
+        }
+        .empty-flashcard {
+            text-align: center;
+            padding: 3rem;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--success);
+        }
+        .confetti {
+            font-size: 3rem;
+        }
+
+        @media (max-width: 550px) {
+            body {
+                padding: 0.5rem;
+            }
+            .container {
+                padding: 1.2rem 0.8rem;
+                border-radius: 1.8rem;
+            }
+            .flashcard {
+                padding: 1.5rem 1rem;
+            }
+            .flashcard .question-text {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📘 Системный анализ <span>ОТС 1–30</span></h1>
+
+        <div class="mode-tabs">
+            <button class="mode-tab active" data-mode="study">📚 Все вопросы</button>
+            <button class="mode-tab" data-mode="flashcards">🃏 Карточки (самопроверка)</button>
+        </div>
+
+        <div id="studyMode">
+            <div class="controls-row">
+                <input type="text" class="search-input" id="searchInput" placeholder="🔍 Поиск по вопросам и ответам...">
+                <button class="btn btn-outline" id="expandAllBtn">📖 Развернуть все</button>
+            </div>
+            <div class="question-grid" id="accordion"></div>
+        </div>
+
+        <div id="flashcardMode" style="display: none;">
+            <div class="flashcard-container" id="flashcardContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // Полные формулировки вопросов и исправленные развёрнутые ответы
+            const questions = [
+                {
+                    id: 1,
+                    title: "Понятие множества и подмножества",
+                    fullQuestion: "Дайте определение понятиям «множество» и «подмножество». Приведите пример.",
+                    badge: "основа",
+                    content: `
+                        <p><strong>Множество</strong> — это совокупность объектов (элементов), объединённых по определённому признаку или правилу. Объекты, входящие в множество, называются его элементами.</p>
+                        <p><strong>Подмножество</strong> — это множество, все элементы которого одновременно принадлежат другому (исходному) множеству. Обозначается A ⊆ B.</p>
+                        <p><strong>Пример:</strong> множество всех студентов учебной группы — исходное множество; подмножество — студенты этой группы, получающие повышенную стипендию.</p>
+                    `
+                },
+                {
+                    id: 2,
+                    title: "Понятие системы",
+                    fullQuestion: "Что такое система? Дайте развёрнутое определение.",
+                    badge: "база",
+                    content: `
+                        <p><strong>Система</strong> — это совокупность взаимосвязанных и взаимодействующих элементов, образующих единое целое и функционирующих для достижения определённой цели (целей).</p>
+                        <p>Ключевые признаки системы: наличие элементов, связей между ними, целостность, наличие цели или назначения, взаимодействие с внешней средой.</p>
+                    `
+                },
+                {
+                    id: 3,
+                    title: "Основные направления системных исследований",
+                    fullQuestion: "Перечислите и кратко охарактеризуйте основные направления системных исследований.",
+                    badge: "7 направлений",
+                    content: `
+                        <ul class="list-styled">
+                            <li><strong>Общая теория систем</strong> — изучает общие закономерности строения и функционирования систем любой природы (Л. фон Берталанфи).</li>
+                            <li><strong>Кибернетика</strong> — наука об управлении, связи и переработке информации в машинах и живых организмах (Н. Винер).</li>
+                            <li><strong>Системный анализ</strong> — методология исследования сложных проблем и принятия решений на основе системного подхода.</li>
+                            <li><strong>Исследование операций</strong> — применение математических методов для обоснования оптимальных решений.</li>
+                            <li><strong>Теория управления</strong> — изучает процессы управления в технических, организационных и социальных системах.</li>
+                            <li><strong>Синергетика</strong> — наука о самоорганизации в сложных неравновесных системах (Г. Хакен, И. Пригожин).</li>
+                            <li><strong>Системотехника</strong> — прикладное направление, связанное с проектированием и созданием сложных технических систем.</li>
+                        </ul>
+                    `
+                },
+                {
+                    id: 4,
+                    title: "Понятия, характеризующие систему",
+                    fullQuestion: "Перечислите основные понятия (категории), которые используются для описания и характеристики системы.",
+                    badge: "10 понятий",
+                    content: `
+                        <p>Основные понятия, характеризующие систему:</p>
+                        <p><strong>Элемент</strong> — минимальная неделимая часть системы в рамках данного рассмотрения.</p>
+                        <p><strong>Связь</strong> — отношение между элементами, обеспечивающее их взаимодействие.</p>
+                        <p><strong>Структура</strong> — совокупность устойчивых связей и отношений между элементами системы.</p>
+                        <p><strong>Цель</strong> — желаемое состояние или результат функционирования системы.</p>
+                        <p><strong>Среда</strong> — всё, что находится за пределами системы и взаимодействует с ней.</p>
+                        <p><strong>Вход</strong> — ресурсы, информация, энергия, поступающие в систему из среды.</p>
+                        <p><strong>Выход</strong> — результаты функционирования системы, передаваемые в среду.</p>
+                        <p><strong>Функция</strong> — роль, которую выполняет элемент или система в целом.</p>
+                        <p><strong>Состояние</strong> — совокупность значений характеристик системы в данный момент времени.</p>
+                        <p><strong>Поведение</strong> — изменение состояния системы во времени.</p>
+                    `
+                },
+                {
+                    id: 5,
+                    title: "Свойства систем",
+                    fullQuestion: "Назовите и раскройте основные свойства систем.",
+                    badge: "8 свойств",
+                    content: `
+                        <ul class="list-styled">
+                            <li><strong>Целостность</strong> — система воспринимается как единое целое, несводимое к сумме свойств элементов.</li>
+                            <li><strong>Эмерджентность</strong> — появление у системы новых свойств, отсутствующих у её отдельных элементов.</li>
+                            <li><strong>Иерархичность</strong> — система может рассматриваться как элемент системы более высокого уровня (надсистемы), а её элементы — как системы нижнего уровня.</li>
+                            <li><strong>Структурность</strong> — наличие устойчивой организации и связей между элементами.</li>
+                            <li><strong>Целенаправленность</strong> — функционирование системы направлено на достижение определённой цели.</li>
+                            <li><strong>Адаптивность</strong> — способность приспосабливаться к изменениям внешней среды.</li>
+                            <li><strong>Управляемость</strong> — возможность целенаправленного изменения состояния системы.</li>
+                            <li><strong>Устойчивость</strong> — способность сохранять свои свойства и функции при внешних воздействиях.</li>
+                        </ul>
+                    `
+                },
+                {
+                    id: 6,
+                    title: "Классификация систем",
+                    fullQuestion: "Приведите классификацию систем по различным основаниям.",
+                    badge: "виды",
+                    content: `
+                        <p><strong>По происхождению:</strong> естественные (природные) и искусственные (созданные человеком).</p>
+                        <p><strong>По степени взаимодействия со средой:</strong> открытые (обмениваются веществом, энергией, информацией) и закрытые (изолированные, обмен минимален или отсутствует).</p>
+                        <p><strong>По степени сложности:</strong> простые (малое число элементов и связей), сложные (развитая структура) и сверхсложные (уникальные системы — мозг, общество).</p>
+                        <p><strong>По характеру изменения во времени:</strong> статические (состояние не меняется) и динамические (состояние изменяется).</p>
+                        <p><strong>По природе элементов:</strong> технические, биологические, социальные, социально-экономические и смешанные.</p>
+                    `
+                },
+                {
+                    id: 7,
+                    title: "Границы системы",
+                    fullQuestion: "Что такое граница системы и какие потоки через неё проходят?",
+                    badge: "потоки",
+                    content: `
+                        <p><strong>Граница системы</strong> — это условная (или реальная) линия, отделяющая систему от внешней среды. Определение границ — важный этап системного анализа, так как от этого зависит, что включается в рассмотрение, а что нет.</p>
+                        <p>Через границы системы проходят три основных вида потоков:</p>
+                        <ul class="list-styled">
+                            <li><strong>Материальные потоки</strong> — сырьё, материалы, продукция, ресурсы.</li>
+                            <li><strong>Энергетические потоки</strong> — электроэнергия, тепловая энергия, механическая работа.</li>
+                            <li><strong>Информационные потоки</strong> — данные, сигналы, команды, обратная связь.</li>
+                        </ul>
+                    `
+                },
+                {
+                    id: 8,
+                    title: "Системный подход",
+                    fullQuestion: "В чём сущность системного подхода? Сформулируйте его основной принцип.",
+                    badge: "метод",
+                    content: `
+                        <p><strong>Системный подход</strong> — это общенаучный метод исследования, при котором любой объект рассматривается как целостная система с учётом взаимосвязей между её элементами и взаимодействия с внешней средой.</p>
+                        <div class="highlight">Основной принцип системного подхода: рассматривать объект не как сумму изолированных частей, а как единое целое, где свойства целого не сводятся к свойствам отдельных элементов (принцип эмерджентности).</div>
+                        <p>Системный подход требует учёта всех существенных связей, влияния среды, иерархичности строения и целенаправленности функционирования.</p>
+                    `
+                },
+                {
+                    id: 9,
+                    title: "Моделирование системы",
+                    fullQuestion: "Что такое моделирование системы и каковы его основные цели?",
+                    badge: "цели",
+                    content: `
+                        <p><strong>Моделирование</strong> — это процесс построения и исследования модели, которая отражает существенные свойства реальной системы и замещает её в процессе изучения.</p>
+                        <p><strong>Основные цели моделирования:</strong></p>
+                        <ul class="list-styled">
+                            <li><strong>Анализ</strong> — изучение структуры, свойств и поведения существующей системы.</li>
+                            <li><strong>Прогнозирование</strong> — предсказание будущего состояния системы при заданных условиях.</li>
+                            <li><strong>Проектирование</strong> — создание новых систем с заданными характеристиками.</li>
+                            <li><strong>Управление</strong> — поиск оптимальных управляющих воздействий для достижения целей.</li>
+                        </ul>
+                    `
+                },
+                {
+                    id: 10,
+                    title: "Модель чёрного ящика, состава и структуры",
+                    fullQuestion: "Опишите три базовые модели описания системы: «чёрный ящик», модель состава и структурную модель.",
+                    badge: "3 модели",
+                    content: `
+                        <p><strong>Модель «чёрного ящика»</strong> — описывает систему только через её входы и выходы, без раскрытия внутреннего устройства. Используется, когда внутренняя структура неизвестна или не важна для решаемой задачи. Позволяет изучать поведение системы как реакцию на внешние воздействия.</p>
+                        <p><strong>Модель состава</strong> — отображает перечень элементов (компонентов), из которых состоит система. Показывает, из каких частей собрано целое, но не раскрывает связей между ними.</p>
+                        <p><strong>Структурная модель</strong> — показывает не только элементы системы, но и связи (отношения) между ними. Раскрывает внутреннюю организацию и архитектуру системы.</p>
+                    `
+                },
+                {
+                    id: 11,
+                    title: "Свойства моделей систем",
+                    fullQuestion: "Какими свойствами должна обладать качественная модель системы?",
+                    badge: "6 свойств",
+                    content: `
+                        <p>Качественная модель должна обладать следующими свойствами:</p>
+                        <ul class="list-styled">
+                            <li><strong>Адекватность</strong> — соответствие модели реальной системе по существенным характеристикам.</li>
+                            <li><strong>Простота</strong> — модель не должна быть излишне сложной, содержать только значимые элементы.</li>
+                            <li><strong>Наглядность</strong> — удобство восприятия и интерпретации модели.</li>
+                            <li><strong>Полнота</strong> — учёт всех существенных для целей моделирования аспектов.</li>
+                            <li><strong>Точность</strong> — степень приближения результатов моделирования к реальным значениям.</li>
+                            <li><strong>Экономичность</strong> — затраты на создание и использование модели должны быть оправданы.</li>
+                        </ul>
+                    `
+                },
+                {
+                    id: 12,
+                    title: "Уровни моделирования систем",
+                    fullQuestion: "Перечислите основные уровни (этапы) моделирования систем.",
+                    badge: "6 уровней",
+                    content: `
+                        <p>Процесс моделирования обычно включает следующие уровни (от абстрактного к конкретному):</p>
+                        <ol class="list-styled">
+                            <li><strong>Концептуальный</strong> — формирование общего представления о системе, определение целей и границ моделирования.</li>
+                            <li><strong>Логический</strong> — описание структуры, функций и логических связей (например, диаграммы IDEF0, DFD).</li>
+                            <li><strong>Математический</strong> — формализация в виде математических уравнений и зависимостей.</li>
+                            <li><strong>Алгоритмический</strong> — разработка алгоритмов, реализующих математическую модель.</li>
+                            <li><strong>Программный</strong> — реализация алгоритмов в виде программного кода.</li>
+                            <li><strong>Экспериментальный</strong> — проведение экспериментов с моделью, верификация и валидация результатов.</li>
+                        </ol>
+                    `
+                },
+                {
+                    id: 13,
+                    title: "Предприятие как система",
+                    fullQuestion: "Охарактеризуйте предприятие как систему. Что является входом и выходом?",
+                    badge: "СЭС",
+                    content: `
+                        <p><strong>Предприятие</strong> — это сложная, открытая, динамическая социально-экономическая система, которая преобразует входные ресурсы в готовую продукцию или услуги с целью получения прибыли.</p>
+                        <p><strong>Входы предприятия:</strong> сырьё и материалы, персонал (трудовые ресурсы), финансовые ресурсы, информация, оборудование и технологии.</p>
+                        <p><strong>Выходы предприятия:</strong> готовая продукция, услуги, прибыль, рабочие места, налоги и отчисления, отходы производства.</p>
+                        <p>Предприятие взаимодействует с внешней средой (рынок, государство, поставщики, потребители) и имеет сложную внутреннюю структуру.</p>
+                    `
+                },
+                {
+                    id: 14,
+                    title: "Основные структуры предприятия",
+                    fullQuestion: "Какие основные виды структур выделяют при анализе предприятия?",
+                    badge: "5 структур",
+                    content: `
+                        <p>При системном анализе предприятия выделяют следующие взаимосвязанные структуры:</p>
+                        <ul class="list-styled">
+                            <li><strong>Производственная</strong> — состав и взаимосвязи производственных подразделений (цеха, участки).</li>
+                            <li><strong>Организационная</strong> — распределение полномочий, ответственности и подчинённости между подразделениями и должностными лицами.</li>
+                            <li><strong>Финансовая</strong> — источники и направления движения финансовых средств.</li>
+                            <li><strong>Информационная</strong> — потоки данных и информационные связи внутри предприятия.</li>
+                            <li><strong>Управленческая</strong> — иерархия уровней управления и процессы принятия решений.</li>
+                        </ul>
+                    `
+                },
+                {
+                    id: 15,
+                    title: "Системный анализ",
+                    fullQuestion: "Дайте определение системного анализа и назовите его основную задачу.",
+                    badge: "определение",
+                    content: `
+                        <p><strong>Системный анализ</strong> — это методология исследования сложных систем и проблем, основанная на системном подходе и направленная на выработку обоснованных решений.</p>
+                        <div class="highlight">Основная задача системного анализа — выявление реальной проблемы (проблемной ситуации), определение целей, поиск и сравнение альтернативных вариантов решения для выбора оптимального (или наиболее рационального) пути.</div>
+                        <p>Системный анализ сочетает формальные методы (математическое моделирование) и экспертные (эвристические) процедуры.</p>
+                    `
+                },
+                {
+                    id: 16,
+                    title: "Основные этапы проведения системного анализа",
+                    fullQuestion: "Перечислите основные этапы (шаги) системного анализа.",
+                    badge: "8 этапов",
+                    content: `
+                        <ol class="list-styled">
+                            <li><strong>Постановка проблемы</strong> — выявление симптомов, определение проблемной ситуации.</li>
+                            <li><strong>Формулирование целей</strong> — определение желаемого результата и критериев его достижения.</li>
+                            <li><strong>Сбор информации</strong> — получение данных о системе, её среде, ограничениях.</li>
+                            <li><strong>Построение модели</strong> — разработка формализованного описания системы.</li>
+                            <li><strong>Анализ альтернатив</strong> — генерация возможных вариантов решения и их оценка.</li>
+                            <li><strong>Выбор решения</strong> — принятие решения на основе критериев и анализа.</li>
+                            <li><strong>Реализация</strong> — внедрение выбранного решения на практике.</li>
+                            <li><strong>Контроль результатов</strong> — оценка эффективности, мониторинг и корректировка.</li>
+                        </ol>
+                    `
+                },
+                {
+                    id: 17,
+                    title: "Структурно-функциональный анализ. Положения",
+                    fullQuestion: "В чём суть структурно-функционального анализа? Сформулируйте его основное положение.",
+                    badge: "СФА",
+                    content: `
+                        <p><strong>Структурно-функциональный анализ</strong> — это метод исследования, который изучает систему в двух взаимосвязанных аспектах:</p>
+                        <ul class="list-styled">
+                            <li><strong>Структурный аспект</strong> — из каких элементов состоит система и как они связаны.</li>
+                            <li><strong>Функциональный аспект</strong> — какие функции выполняет каждый элемент и система в целом.</li>
+                        </ul>
+                        <div class="highlight">Основное положение: каждый элемент системы выполняет определённую функцию, и структура системы формируется под её функции. Изменение функций ведёт к изменению структуры, и наоборот.</div>
+                    `
+                },
+                {
+                    id: 18,
+                    title: "Методология функционального моделирования IDEF0",
+                    fullQuestion: "Опишите методологию IDEF0. Что обозначает аббревиатура ICOM?",
+                    badge: "ICOM",
+                    content: `
+                        <p><strong>IDEF0</strong> (Integration Definition for Function Modeling) — это методология графического описания функций (процессов) системы. Основной элемент — функциональный блок, обозначающий действие или процесс.</p>
+                        <p>С каждым функциональным блоком связаны четыре типа стрелок (схема <strong>ICOM</strong>):</p>
+                        <ul class="list-styled">
+                            <li><strong>I — Input (Вход)</strong> — то, что преобразуется в процессе (материалы, данные). Входит слева.</li>
+                            <li><strong>C — Control (Управление)</strong> — правила, стандарты, инструкции, ограничения, которые управляют процессом. Входит сверху.</li>
+                            <li><strong>O — Output (Выход)</strong> — результат процесса. Выходит справа.</li>
+                            <li><strong>M — Mechanism (Механизм)</strong> — ресурсы, которые выполняют процесс (персонал, оборудование, ПО). Входит снизу.</li>
+                        </ul>
+                        <div class="highlight">Схематично: Управление (C) направлено сверху, Вход (I) — слева, функция преобразует вход в Выход (O) справа, с помощью Механизма (M) снизу.</div>
+                    `
+                },
+                {
+                    id: 19,
+                    title: "Понятие процессного подхода. Положения",
+                    fullQuestion: "Что такое процессный подход в управлении и каковы его ключевые положения?",
+                    badge: "процесс",
+                    content: `
+                        <p><strong>Процессный подход</strong> — это подход к управлению, при котором организация рассматривается как совокупность взаимосвязанных и взаимодействующих бизнес-процессов, а не как набор независимых функциональных подразделений.</p>
+                        <p><strong>Ключевые положения:</strong></p>
+                        <ul class="list-styled">
+                            <li><strong>Ориентация на результат</strong> — каждый процесс направлен на создание ценности для потребителя.</li>
+                            <li><strong>Управление процессами</strong> — назначение владельцев процессов, ответственных за их результативность.</li>
+                            <li><strong>Постоянное улучшение</strong> — непрерывный анализ и оптимизация процессов (цикл PDCA).</li>
+                            <li><strong>Измерение эффективности</strong> — использование ключевых показателей (KPI) для оценки процессов.</li>
+                        </ul>
+                    `
+                },
+                {
+                    id: 20,
+                    title: "Дерево целей",
+                    fullQuestion: "Что такое дерево целей и для чего оно используется?",
+                    badge: "иерархия",
+                    content: `
+                        <p><strong>Дерево целей</strong> — это иерархическая структура, представляющая собой декомпозицию генеральной (главной) цели на подцели и конкретные задачи.</p>
+                        <p><strong>Характеристики:</strong></p>
+                        <ul class="list-styled">
+                            <li>На верхнем уровне — генеральная цель (миссия).</li>
+                            <li>На следующих уровнях — подцели, достижение которых обеспечивает реализацию целей верхнего уровня.</li>
+                            <li>На нижнем уровне — конкретные задачи, поддающиеся количественной оценке.</li>
+                        </ul>
+                        <p><strong>Используется</strong> для стратегического планирования, управления проектами и программами, распределения ресурсов.</p>
+                    `
+                },
+                {
+                    id: 21,
+                    title: "Дерево проблем",
+                    fullQuestion: "Что такое дерево проблем и какова его роль в системном анализе?",
+                    badge: "причины",
+                    content: `
+                        <p><strong>Дерево проблем</strong> — это иерархическая схема, отображающая причинно-следственные связи между проблемами. Центральная проблема помещается в корень дерева (или на верхний уровень), а ниже (или вокруг) располагаются порождающие её причины.</p>
+                        <p><strong>Роль в системном анализе:</strong></p>
+                        <ul class="list-styled">
+                            <li>Позволяет выявить корневые (глубинные) причины проблемы, а не только её симптомы.</li>
+                            <li>Помогает определить приоритетные направления для вмешательства и решения проблемы.</li>
+                            <li>Служит основой для построения дерева целей (путём преобразования проблем в позитивные формулировки).</li>
+                        </ul>
+                    `
+                },
+                {
+                    id: 22,
+                    title: "Организационная структура предприятия",
+                    fullQuestion: "Дайте определение организационной структуры предприятия. Что она определяет?",
+                    badge: "подчинённость",
+                    content: `
+                        <p><strong>Организационная структура предприятия</strong> — это совокупность подразделений (отделов, служб) и устойчивых связей между ними, закреплённая в соответствующих документах.</p>
+                        <p>Организационная структура определяет:</p>
+                        <ul class="list-styled">
+                            <li>Распределение полномочий и ответственности между подразделениями и должностными лицами.</li>
+                            <li>Порядок подчинённости и иерархию управления.</li>
+                            <li>Направления информационных и управленческих потоков.</li>
+                            <li>Способы координации деятельности между подразделениями.</li>
+                        </ul>
+                    `
+                },
+                {
+                    id: 23,
+                    title: "Основные виды организационных структур",
+                    fullQuestion: "Перечислите и кратко охарактеризуйте основные виды организационных структур.",
+                    badge: "7 видов",
+                    content: `
+                        <ul class="list-styled">
+                            <li><strong>Линейная</strong> — прямое подчинение, единоначалие. Каждый подчинённый имеет только одного руководителя. Простота, но перегрузка руководителя.</li>
+                            <li><strong>Функциональная</strong> — подчинение по функциям (производство, финансы, маркетинг). Специализация, но возможно дублирование команд.</li>
+                            <li><strong>Линейно-функциональная</strong> — сочетание линейного руководства (принятие решений) и функциональных служб (подготовка решений). Наиболее распространённый тип.</li>
+                            <li><strong>Дивизиональная</strong> — деление по продуктам, регионам или группам клиентов. Дивизионы действуют как почти самостоятельные единицы.</li>
+                            <li><strong>Матричная</strong> — двойное подчинение: руководителю проекта и функциональному руководителю. Эффективна для инновационных задач.</li>
+                            <li><strong>Проектная</strong> — временная структура, создаваемая для выполнения конкретного проекта. После завершения проекта команда распускается.</li>
+                            <li><strong>Сетевая</strong> — совокупность независимых организаций, координирующих деятельность на основе контрактов и информационных технологий.</li>
+                        </ul>
+                    `
+                },
+                {
+                    id: 24,
+                    title: "Прикладные подходы к системному анализу",
+                    fullQuestion: "Перечислите и кратко опишите основные прикладные подходы к системному анализу.",
+                    badge: "6 подходов",
+                    content: `
+                        <div class="grid-examples">
+                            <div class="example-box"><strong>📊 Экономический</strong><br>Анализ с точки зрения затрат, выгод, экономической эффективности, окупаемости.</div>
+                            <div class="example-box"><strong>💾 Информационный</strong><br>Анализ потоков данных, их сбора, обработки, хранения и передачи в системе.</div>
+                            <div class="example-box"><strong>🔄 Кибернетический</strong><br>Изучение управления, обратной связи, адаптации и гомеостаза системы.</div>
+                            <div class="example-box"><strong>📋 Процессный</strong><br>Система как цепочка взаимосвязанных бизнес-процессов.</div>
+                            <div class="example-box"><strong>🌐 Ситуационный</strong><br>Выбор метода управления в зависимости от конкретной ситуации и контекста.</div>
+                            <div class="example-box"><strong>🧱 Ресурсный</strong><br>Анализ обеспеченности системы ресурсами и эффективности их использования.</div>
+                        </div>
+                    `
+                },
+                {
+                    id: 25,
+                    title: "Развитие теории систем – основные этапы",
+                    fullQuestion: "Назовите и кратко опишите основные этапы развития теории систем.",
+                    badge: "5 этапов",
+                    content: `
+                        <ul class="list-styled">
+                            <li><strong>1. Возникновение кибернетики (1940–1950-е гг.)</strong> — Н. Винер заложил основы науки об управлении, связи и обработке информации в машинах и живых организмах.</li>
+                            <li><strong>2. Создание общей теории систем (1950–1960-е гг.)</strong> — Л. фон Берталанфи сформулировал концепцию поиска универсальных закономерностей для систем любой природы.</li>
+                            <li><strong>3. Развитие системного анализа (1960–1970-е гг.)</strong> — формирование прикладной методологии решения сложных проблем, особенно в военной и аэрокосмической сферах.</li>
+                            <li><strong>4. Появление синергетики (1970–1980-е гг.)</strong> — Г. Хакен и И. Пригожин разработали теорию самоорганизации в неравновесных открытых системах.</li>
+                            <li><strong>5. Развитие цифровых и киберфизических систем (2000-е гг. – настоящее время)</strong> — интеграция информационных технологий, интернета вещей, искусственного интеллекта и физических объектов в единые киберфизические системы.</li>
+                        </ul>
+                    `
+                },
+                {
+                    id: 26,
+                    title: "Киберфизические, кибербиологические и киберсоциальные системы",
+                    fullQuestion: "Дайте определения киберфизических, кибербиологических и киберсоциальных систем. Приведите примеры.",
+                    badge: "CPS",
+                    content: `
+                        <p><strong>Киберфизические системы (CPS)</strong> — это системы, в которых вычислительные и коммуникационные компоненты тесно интегрированы с физическими процессами. <em>Примеры:</em> умный завод (Industry 4.0), беспилотный автомобиль, интеллектуальная энергосеть (smart grid).</p>
+                        <p><strong>Кибербиологические системы</strong> — объединяют цифровые технологии и биологические объекты для мониторинга, управления или улучшения биологических функций. <em>Примеры:</em> нейроинтерфейсы (мозг-компьютер), имплантируемые биосенсоры, системы доставки лекарств с цифровым управлением.</p>
+                        <p><strong>Киберсоциальные системы</strong> — объединяют людей, информационные технологии и социальные процессы в единую среду взаимодействия. <em>Примеры:</em> социальные сети, платформы электронного правительства, цифровые экосистемы умного города.</p>
+                    `
+                },
+                {
+                    id: 27,
+                    title: "Понятие синтеза и анализа",
+                    fullQuestion: "Дайте определения понятиям «анализ» и «синтез». Какова их взаимосвязь в системных исследованиях?",
+                    badge: "анализ/синтез",
+                    content: `
+                        <p><strong>🔍 Анализ</strong> — это метод исследования, заключающийся в мысленном или фактическом разделении целостного объекта на составные части (элементы, свойства, отношения) и их самостоятельном изучении.</p>
+                        <p><strong>🧩 Синтез</strong> — это метод исследования, заключающийся в мысленном или фактическом объединении ранее выделенных частей в единое целое для получения нового, более полного знания об объекте.</p>
+                        <div class="highlight">В системных исследованиях анализ и синтез неразрывно связаны и дополняют друг друга: анализ позволяет понять устройство системы, синтез — восстановить целостную картину и понять, как из частей возникает новое качество целого.</div>
+                    `
+                },
+                {
+                    id: 28,
+                    title: "Вклад Людвига фон Берталанфи",
+                    fullQuestion: "Каков вклад Людвига фон Берталанфи в создание общей теории систем?",
+                    badge: "ОТС",
+                    content: `
+                        <p><strong>Людвиг фон Берталанфи</strong> (1901–1972) — австрийский биолог и философ, основоположник общей теории систем:</p>
+                        <ul class="list-styled">
+                            <li>Сформулировал <strong>Общую теорию систем</strong> (General System Theory) как междисциплинарную науку, изучающую общие закономерности строения и функционирования систем независимо от их природы.</li>
+                            <li>Ввёл понятие <strong>открытых систем</strong>, обменивающихся веществом, энергией и информацией с окружающей средой, и описал их свойства (эквифинальность, способность к саморегуляции).</li>
+                            <li>Доказал существование <strong>изоморфизма законов</strong> в различных науках — общих закономерностей, применимых к биологическим, техническим и социальным системам.</li>
+                        </ul>
+                    `
+                },
+                {
+                    id: 29,
+                    title: "Работы Норберта Винера и становление кибернетики",
+                    fullQuestion: "Опишите вклад Норберта Винера в становление кибернетики как науки.",
+                    badge: "кибернетика",
+                    content: `
+                        <p><strong>Норберт Винер</strong> (1894–1964) — американский математик и философ, основоположник кибернетики:</p>
+                        <ul class="list-styled">
+                            <li>Создал <strong>кибернетику</strong> как науку об общих закономерностях управления и связи в машинах, живых организмах и обществе.</li>
+                            <li>Разработал фундаментальную <strong>теорию обратной связи</strong>, показав, что отрицательная обратная связь является ключевым механизмом поддержания устойчивости систем.</li>
+                            <li>Исследовал параллели между процессами управления в живых организмах и автоматических устройствах, предсказав развитие искусственного интеллекта.</li>
+                            <li>Основная работа — книга <strong>«Cybernetics: or Control and Communication in the Animal and the Machine»</strong> (1948), давшая название целой науке.</li>
+                        </ul>
+                    `
+                },
+                {
+                    id: 30,
+                    title: "Русские и советские учёные в системных исследованиях",
+                    fullQuestion: "Назовите ключевых русских и советских учёных, внёсших вклад в системные исследования, и кратко опишите их заслуги.",
+                    badge: "школа",
+                    content: `
+                        <div class="scholar"><strong>👤 Александр Богданов</strong> (1873–1928) — создал «Тектологию» — всеобщую организационную науку, предшественницу общей теории систем.</div>
+                        <div class="scholar"><strong>👤 Алексей Ляпунов</strong> (1911–1973) — внёс фундаментальный вклад в развитие кибернетики и программирования в СССР.</div>
+                        <div class="scholar"><strong>👤 Виктор Глушков</strong> (1923–1982) — основатель теории автоматизированных систем управления (АСУ), разработчик принципов построения сложных информационных систем.</div>
+                        <div class="scholar"><strong>👤 Анатолий Китов</strong> (1920–2005) — пионер советской вычислительной техники, один из создателей первых ЭВМ и АСУ.</div>
+                        <div class="scholar"><strong>👤 Пётр Анохин</strong> (1898–1974) — разработал теорию функциональных систем в биологии и физиологии, описывающую механизмы целенаправленного поведения.</div>
+                        <hr>
+                        <p>Все эти учёные внесли значительный вклад в развитие системного подхода, кибернетики, информатики и теории управления в России и СССР.</p>
+                    `
+                }
+            ];
+
+            const studyModeDiv = document.getElementById('studyMode');
+            const flashcardModeDiv = document.getElementById('flashcardMode');
+            const accordionContainer = document.getElementById('accordion');
+            const flashcardContainer = document.getElementById('flashcardContainer');
+            const searchInput = document.getElementById('searchInput');
+            const expandAllBtn = document.getElementById('expandAllBtn');
+            const modeTabs = document.querySelectorAll('.mode-tab');
+            let currentMode = 'study';
+
+            // ========== РЕЖИМ ИЗУЧЕНИЯ ==========
+            function renderStudyMode() {
+                if (!accordionContainer) return;
+                accordionContainer.innerHTML = '';
+                questions.forEach((q, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.dataset.index = index;
+                    card.dataset.title = (q.title + ' ' + q.fullQuestion).toLowerCase();
+                    card.dataset.content = q.content.replace(/<[^>]+>/g, '').toLowerCase();
+
+                    card.innerHTML = `
+                        <div class="card-header">
+                            <div class="question-title">${q.id}. ${q.title} <span class="badge">${q.badge}</span></div>
+                            <span class="toggle-icon">+</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="content-block">
+                                <p><em>${q.fullQuestion}</em></p>
+                                ${q.content}
+                            </div>
+                        </div>
+                    `;
+                    card.querySelector('.card-header').addEventListener('click', () => {
+                        card.classList.toggle('active');
+                        updateExpandAllBtn();
+                    });
+                    accordionContainer.appendChild(card);
+                });
+                updateExpandAllBtn();
+            }
+
+            function updateExpandAllBtn() {
+                if (!expandAllBtn) return;
+                const visibleCards = document.querySelectorAll('#accordion .card:not(.hidden-card)');
+                if (visibleCards.length === 0) { expandAllBtn.textContent = '📖 Развернуть все'; return; }
+                const allActive = Array.from(visibleCards).every(c => c.classList.contains('active'));
+                expandAllBtn.textContent = allActive ? '📕 Свернуть все' : '📖 Развернуть все';
+            }
+
+            function filterStudyCards() {
+                if (!searchInput) return;
+                const query = searchInput.value.trim().toLowerCase();
+                document.querySelectorAll('#accordion .card').forEach(card => {
+                    const title = card.dataset.title || '';
+                    const content = card.dataset.content || '';
+                    if (query === '' || title.includes(query) || content.includes(query)) {
+                        card.classList.remove('hidden-card');
+                    } else {
+                        card.classList.add('hidden-card');
+                        card.classList.remove('active');
+                    }
+                });
+                updateExpandAllBtn();
+            }
+
+            function expandAllStudyCards() {
+                const visibleCards = document.querySelectorAll('#accordion .card:not(.hidden-card)');
+                if (visibleCards.length === 0) return;
+                const allActive = Array.from(visibleCards).every(c => c.classList.contains('active'));
+                visibleCards.forEach(card => allActive ? card.classList.remove('active') : card.classList.add('active'));
+                updateExpandAllBtn();
+            }
+
+            // ========== РЕЖИМ КАРТОЧЕК ==========
+            let wrongPile = [], currentCardIndex = 0, totalCorrect = 0, totalWrong = 0;
+
+            function shuffleArray(arr) { for (let i = arr.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [arr[i], arr[j]] = [arr[j], arr[i]]; } return arr; }
+
+            function initFlashcards() {
+                wrongPile = shuffleArray([...questions]);
+                currentCardIndex = 0;
+                totalCorrect = 0;
+                totalWrong = 0;
+                renderFlashcard();
+            }
+
+            function renderFlashcard() {
+                if (!flashcardContainer) return;
+                if (wrongPile.length === 0) {
+                    flashcardContainer.innerHTML = `
+                        <div class="empty-flashcard"><div class="confetti">🎉</div><p>Вы выучили все вопросы!</p><p style="font-size:0.9rem; color: var(--text-secondary); margin-top:0.5rem;">Правильных ответов: ${totalCorrect} | Ошибок исправлено: ${totalWrong}</p><button class="btn btn-primary btn-lg" style="margin-top:1.5rem;" id="restartFlashcardsBtn">🔄 Начать заново</button></div>`;
+                    document.getElementById('restartFlashcardsBtn')?.addEventListener('click', initFlashcards);
+                    return;
+                }
+                const totalRemaining = wrongPile.length, totalEver = totalCorrect + totalWrong + totalRemaining;
+                const percent = totalEver > 0 ? Math.round((totalCorrect / totalEver) * 100) : 0;
+                const q = wrongPile[currentCardIndex];
+                flashcardContainer.innerHTML = `
+                    <div class="flashcard-stats">
+                        <div class="stat-item"><span class="dot dot-correct"></span> Верно: <strong>${totalCorrect}</strong></div>
+                        <div class="stat-item"><span class="dot dot-wrong"></span> Ошибок: <strong>${totalWrong}</strong></div>
+                        <div class="stat-item"><span class="dot dot-remaining"></span> Осталось: <strong>${totalRemaining}</strong></div>
+                        <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: ${percent}%;"></div></div>
+                    </div>
+                    <div class="flashcard" id="activeFlashcard" data-question-id="${q.id}">
+                        <div class="question-number">Вопрос ${q.id} из 30</div>
+                        <div class="question-text">${q.title}</div>
+                        <div class="question-full">${q.fullQuestion}</div>
+                        <div class="answer-reveal" id="answerReveal"><strong>📖 Правильный ответ:</strong><div style="margin-top:0.5rem;">${q.content}</div></div>
+                        <div class="btn-row"><button class="btn btn-outline btn-lg" id="showAnswerBtn">👁 Показать ответ</button></div>
+                        <div class="btn-row" id="selfEvalBtns" style="display: none;">
+                            <button class="btn btn-success btn-lg" id="markCorrectBtn">✅ Верно</button>
+                            <button class="btn btn-danger btn-lg" id="markWrongBtn">❌ Неверно</button>
+                        </div>
+                    </div>
+                    <button class="btn btn-ghost" id="resetFlashcardsBtn" style="margin-top:0.5rem;">🔄 Сбросить все карточки</button>`;
+                document.getElementById('showAnswerBtn')?.addEventListener('click', () => {
+                    document.getElementById('answerReveal').classList.add('show');
+                    document.getElementById('showAnswerBtn').style.display = 'none';
+                    document.getElementById('selfEvalBtns').style.display = 'flex';
+                });
+                document.getElementById('markCorrectBtn')?.addEventListener('click', () => {
+                    totalCorrect++;
+                    wrongPile.splice(currentCardIndex, 1);
+                    if (wrongPile.length > 0 && currentCardIndex >= wrongPile.length) currentCardIndex = 0;
+                    renderFlashcard();
+                });
+                document.getElementById('markWrongBtn')?.addEventListener('click', () => {
+                    totalWrong++;
+                    const movedQ = wrongPile.splice(currentCardIndex, 1)[0];
+                    wrongPile.push(movedQ);
+                    if (currentCardIndex >= wrongPile.length) currentCardIndex = 0;
+                    renderFlashcard();
+                });
+                document.getElementById('resetFlashcardsBtn')?.addEventListener('click', initFlashcards);
+            }
+
+            function switchMode(mode) {
+                currentMode = mode;
+                modeTabs.forEach(tab => { tab.classList.remove('active'); if (tab.dataset.mode === mode) tab.classList.add('active'); });
+                studyModeDiv.style.display = mode === 'study' ? 'block' : 'none';
+                flashcardModeDiv.style.display = mode === 'flashcards' ? 'block' : 'none';
+                if (mode === 'study') renderStudyMode();
+                else initFlashcards();
+            }
+
+            modeTabs.forEach(tab => tab.addEventListener('click', () => { if (tab.dataset.mode !== currentMode) switchMode(tab.dataset.mode); }));
+            if (searchInput) searchInput.addEventListener('input', filterStudyCards);
+            if (expandAllBtn) expandAllBtn.addEventListener('click', expandAllStudyCards);
+            switchMode('study');
+        })();
+    </script>
+</body>
+</html>
